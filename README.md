@@ -1,4 +1,7 @@
 
+# NOTE: THIS LIBRARY IS A WORK IN PROGRESS AND HAS NO STABLE RELEASES YET.
+Currently, the Lazarus library is still being developed and tested. Stay tuned for a first (either beta or full) release.
+
 # Lazarus
 <p align="center">
 <img width="400" height="400" src="Logo512.png" />
