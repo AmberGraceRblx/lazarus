@@ -17,7 +17,7 @@ Lazarus provides a simple array of tools that are easy to use and understand, wh
 
 ## Example
 
-Here is a sample "Car" behavior script written using lazarus, with comments annotating highlights of Lazarus' features:
+Here is a sample "Car" behavior script written using Lazarus, with comments annotating highlights of Lazarus' features:
 ```lua 
 local function Seat(seat)
     local fireParticles: Fire = Lazarus.WaitForChild(seat, "FireParticles")
@@ -40,7 +40,7 @@ local function Car(car)
     local body: BasePart = Lazarus.WaitForChild(car, "Body")
 
     -- Lazarus lets you nest behaviors, making for cleaner and more
-    -- shallow code that is easy to read! When behaviors are run,
+    -- Shallow code that is easy to read! When behaviors are run,
     -- they return a "cleanup" function which allows you to specify
     -- when these behaviors start and stop running.
     local cleanupSeats = Lazarus.WithChildren(seats):RunBehavior(Seat)

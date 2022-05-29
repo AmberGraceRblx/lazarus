@@ -3,9 +3,23 @@
     A simple, composable task collector utility object. Acts equivalently to the
     commonly-used "maid" class, without the footguns and sexist undertones.
 
+    Example usage:
+
+        local collect, cleanup = Lazarus.TaskCollector()
+        local myPart = collect(Instance.new("Part"))
+        collect(function()
+            print(
+                "This callback is run in its own thread when cleanup is called!"
+            )
+        end)
+        -- . . .
+        cleanup() -- Cleans up all of the objects that were collected
+
     The first function returned is a "collect" function. This collects tasks
     of varying type (RBXScriptConnection, callback, Instance, table) and handles
-    convenient cleanup for the passed object depending on its type.
+    convenient cleanup for the passed object depending on its type. As a
+    convenience, collect will return the object passed to it, allowing for a
+    one-liner that collects part of an expression that needs to be cleaned up.
 
     The second function returned is a "cleanup" function. When it is called, it
     will idempotently clean up all the tasks that were collected.
@@ -30,9 +44,7 @@ export type CleanupTask = (() -> ())
 
 local TRANSFORM_BY_TYPE: {[string]: (taskObject: any) -> (() -> ())?} = {
     ["function"] = function(cb: () -> ())
-        return function()
-            task.spawn(cb)
-        end
+        return cb
     end,
     ["table"] = function(tab: {[any]: any}): (() ->())?
         local destroy = tab.Destroy
@@ -40,13 +52,11 @@ local TRANSFORM_BY_TYPE: {[string]: (taskObject: any) -> (() -> ())?} = {
             local mt = getmetatable(tab :: any)
             if mt and mt.__call then
                 return function()
-                    task.spawn(function()
-                        (tab :: any)()
-                    end)
+                    (tab :: any)()
                 end
             end
             return function()
-                task.spawn(destroy, tab)
+                destroy(tab)
             end
         end
         error(
