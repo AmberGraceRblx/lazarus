@@ -1,0 +1,10 @@
+[package]
+name = "ambers-careware/lazarus"
+description = "Lazarus: Bring Roblox instances to life using behaviors with cleaner code, StreamingEnabled support, and fewer memory leaks!"
+version = "0.0.1"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+authors = ["DataBrain"]
+license = "Unlicense (Public Domain)"
+
+[dependencies]

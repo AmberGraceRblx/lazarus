@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+   sodipodi:docname="Icon (Inkscape SVG).svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.77771465"
+     inkscape:cx="208.94553"
+     inkscape:cy="381.24523"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3779">
+      <stop
+         style="stop-color:#d3d5aa;stop-opacity:1"
+         offset="0"
+         id="stop3775" />
+      <stop
+         style="stop-color:#68634f;stop-opacity:1"
+         offset="0.5691579"
+         id="stop5487" />
+      <stop
+         style="stop-color:#fad877;stop-opacity:1"
+         offset="0.60290122"
+         id="stop4889" />
+      <stop
+         style="stop-color:#e8e4aa;stop-opacity:1"
+         offset="0.77575314"
+         id="stop5084" />
+      <stop
+         style="stop-color:#cbd1a3;stop-opacity:1"
+         offset="1"
+         id="stop3777" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3779"
+       id="linearGradient3781"
+       x1="80.711349"
+       y1="40.456047"
+       x2="79.525429"
+       y2="139.62614"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(23.063918,23.361635)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5797"
+       x="-0.17772052"
+       y="-0.18067782"
+       width="1.355441"
+       height="1.3611682">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="7.0120701"
+         id="feGaussianBlur5799" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5821"
+       x="-0.11098048"
+       y="-0.11283646"
+       width="1.221961"
+       height="1.2256729">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.7529142"
+         id="feGaussianBlur5823" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter15797"
+       x="-0.48976302"
+       y="-0.401611"
+       width="1.979526"
+       height="1.803222">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="11.389315"
+         id="feGaussianBlur15799" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient3781);fill-opacity:1;stroke:#000000;stroke-width:7.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+       id="rect3025"
+       width="117.20069"
+       height="115.27293"
+       x="41.094845"
+       y="55.000809"
+       ry="2.1349704"
+       inkscape:export-filename="C:\Users\Amber (Work Account)\dev\repos\lazarus\Logo512.png"
+       inkscape:export-xdpi="79.625519"
+       inkscape:export-ydpi="79.625519" />
+    <g
+       id="g5789"
+       transform="translate(23.063918,23.361635)"
+       inkscape:export-filename="C:\Users\Amber (Work Account)\dev\repos\lazarus\Logo512.png"
+       inkscape:export-xdpi="79.625519"
+       inkscape:export-ydpi="79.625519">
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 41.845359,109.54639 27.216494,87.773194 H 40.824742 L 20.752577,63.618556 h 9.86598 L 18.030928,31.639174 V 146.91211 l 1.020618,-36.68531 z"
+         id="path1179"
+         sodipodi:nodetypes="ccccccccc" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 111.41719,109.54639 14.62886,-21.773196 h -13.60824 l 20.07216,-24.154638 h -9.86598 L 135.23162,31.639174 V 146.91211 L 134.211,110.2268 Z"
+         id="path2845"
+         sodipodi:nodetypes="ccccccccc" />
+    </g>
+    <g
+       id="g5795"
+       style="mix-blend-mode:normal;filter:url(#filter5797)"
+       transform="translate(23.063918,23.361635)"
+       inkscape:export-filename="C:\Users\Amber (Work Account)\dev\repos\lazarus\Logo512.png"
+       inkscape:export-xdpi="79.625519"
+       inkscape:export-ydpi="79.625519">
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 41.845359,109.54639 27.216494,87.773194 H 40.824742 L 20.752577,63.618556 h 9.86598 L 18.030928,31.639174 V 146.91211 l 1.020618,-36.68531 z"
+         id="path5791"
+         sodipodi:nodetypes="ccccccccc" />
+      <path
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 111.41719,109.54639 14.62886,-21.773196 h -13.60824 l 20.07216,-24.154638 h -9.86598 L 135.23162,31.639174 V 146.91211 L 134.211,110.2268 Z"
+         id="path5793"
+         sodipodi:nodetypes="ccccccccc" />
+    </g>
+    <rect
+       style="mix-blend-mode:normal;fill:none;fill-opacity:1;stroke:#000000;stroke-width:7.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;filter:url(#filter5821)"
+       id="rect5801"
+       width="117.20069"
+       height="115.27293"
+       x="41.094845"
+       y="55.000809"
+       ry="2.1349704"
+       inkscape:export-filename="C:\Users\Amber (Work Account)\dev\repos\lazarus\Logo512.png"
+       inkscape:export-xdpi="79.625519"
+       inkscape:export-ydpi="79.625519" />
+    <g
+       id="g19315"
+       transform="matrix(1.0984201,0,0,1.0984201,-29.129358,-0.01860632)"
+       inkscape:export-filename="C:\Users\Amber (Work Account)\dev\repos\lazarus\Logo512.png"
+       inkscape:export-xdpi="79.625519"
+       inkscape:export-ydpi="79.625519">
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:105.833px;line-height:1.25;font-family:sans-serif;opacity:1;fill:#89a7ed;fill-opacity:1;stroke:#ffa200;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter15797)"
+         x="81.309982"
+         y="140.72884"
+         id="text15795"><tspan
+           sodipodi:role="line"
+           id="tspan15793"
+           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:105.833px;font-family:Engagement;-inkscape-font-specification:'Engagement Bold Italic';fill:#89a7ed;fill-opacity:1;stroke:#ffa200;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           x="81.309982"
+           y="140.72884">L</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:105.833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="81.309982"
+         y="140.72884"
+         id="text6325"><tspan
+           sodipodi:role="line"
+           id="tspan6323"
+           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:105.833px;font-family:Engagement;-inkscape-font-specification:'Engagement Bold Italic';stroke-width:0.264583"
+           x="81.309982"
+           y="140.72884">L</tspan></text>
+    </g>
+  </g>
+</svg>
