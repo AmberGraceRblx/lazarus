@@ -1,7 +1,7 @@
 
 # Lazarus
 <p align="center">
-<img width="256" height="256" src="Logo512.png" />
+<img width="400" height="400" src="Logo512.png" />
 <br clear="left"/>
 Scripted Behavior Library for Roblox
 </p>

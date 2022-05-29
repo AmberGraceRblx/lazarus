@@ -28,4 +28,9 @@ Lazarus.WaitForChild = require(script.WaitForChild)
 Lazarus.CreateQueryMethod = require(script.CreateQueryFunction)
 Lazarus.CreateResourceMethod = require(script.CreateResourceMethod)
 
+-- Other utilities
+local TaskCollector = require(script.TaskCollector)
+Lazarus.TaskCollector = TaskCollector
+export type CollectableTask = TaskCollector.CleanupTask
+
 return Lazarus
