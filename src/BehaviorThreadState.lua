@@ -33,7 +33,7 @@ type InternalState = {
     userDefinedCleanup: Types.Cleanup?,
 }
 local threadToState: {[thread]: InternalState} = {}
-setmetatable(threadToState, {__key = "k"})
+setmetatable(threadToState, {__mode = "k"})
 
 --[[
     Stops tracking a thread, closes it (i.e. frees its upvalues for garbage
