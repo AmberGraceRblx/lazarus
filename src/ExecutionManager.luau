@@ -161,6 +161,8 @@ function ExecutionManager.StartSystems()
 		heartbeatCountSinceRender += 1
 
 		task.defer(function()
+			debug.profilebegin("Resume_Lazarus_Behaviors")
+
 			-- Read config once in deferred thread every Heartbeat
 			local maxExecutionTime
 			local maxEffectBlocks
@@ -313,16 +315,22 @@ function ExecutionManager.StartSystems()
 
 			if DEBUG_EXECUTIONS then
 				if resourceBlocks > 0 or effectBlocks > 0 or resourceCleanups > 0 or effectCleanups > 0 then
-					print(
+					print(string.format(
 						"Behavior executions completed this frame: \n"
 						.. "Resource Blocks: %d\n"
 						.. "Effect Blocks: %d\n"
 						.. "Resource Cleanups: %d\n"
-						.. "Effect Cleanups: %d\n",
-						resourceBlocks, effectBlocks, resourceCleanups, effectCleanups
-					)
+						.. "Effect Cleanups: %d\n"
+						.. "Execution Time: %.2fms\n",
+						resourceBlocks,
+						effectBlocks,
+						resourceCleanups,
+						effectCleanups,
+						(os.clock() - executionStart) * 1000
+					))
 				end
 			end
+			debug.profileend()
 		end)
 	end)
 	local conn2 = RunService.RenderStepped:Connect(function()

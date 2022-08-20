@@ -62,6 +62,25 @@ end
 Lazarus.WithTagged("Car"):RunBehavior(Car)
 ```
 
+## Performance Considerations
+
+Lazarus uses Roblox's well-optimized [task](https://create.roblox.com/docs/reference/engine/libraries/task) library to spawn and resume behavior threads. For execution of these, you can expect a very mininmal overhead, on the same order of magnitude of typical roblox API calls (WaitForChild, FindFirstChild, event:Connect(), etc.).
+
+Lazarus also throttles behavior executions, allowing for a max execution time, framerate throttling, and behavior code execution throttling.
+To customize these throttle triggers, change the global values in the [Config](/src/Config.luau) (documented within the Config module):
+
+```lua
+local Lazarus = require(path.to.Lazarus)
+
+-- Sets the maximum global execution time for all Lazarus behaviors on the client
+-- per heartbeat frame.
+Lazarus.Config.ClientThrottleTriggers.ExecutionTime = 1 / 1000
+```
+
+Lazarus **is currently single-threaded**, and will not provide multithreading support for now, due to current limitations with roblox's multithreading API. While using an Actor for behavior-bound objects may be a well optimized way to support multithreading in the future, currently there is no multi-threading support for client code, or for scripts not directly descendant to an Actor.
+
+If your game does not use StreamingEnabled, or more performance gains are needed than what Lazarus can provide, consider designing a custom systems for your experience that generates dynamically-scripted instances on the client rather than replicating these instances from the server.
+
 ## Documentation
 
 
