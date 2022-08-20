@@ -47,16 +47,16 @@ export type BehaviorYieldState = {
 	_fromLazarusResourceMethod: true,
 }
 export type ConfigThrottleTriggers = {
-    ExecutionTime: number?,
-    ResourceCleanups: number?,
-    EffectCleanups: number?,
-    ResourceBlocks: number?,
-    EffectBlocks: number?,
+	ExecutionTime: number?,
+	ResourceCleanups: number?,
+	EffectCleanups: number?,
+	ResourceBlocks: number?,
+	EffectBlocks: number?,
 }
 export type Config = {
-    ClientThrottleTriggers: ConfigThrottleTriggers,
-    ClientMaxRenderStepHeartbeatRatio: number?,
-    ServerThrottleTriggers: ConfigThrottleTriggers,
+	ClientThrottleTriggers: ConfigThrottleTriggers,
+	ClientMaxRenderStepHeartbeatRatio: number?,
+	ServerThrottleTriggers: ConfigThrottleTriggers,
 }
 
 return nil
