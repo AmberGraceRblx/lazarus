@@ -23,12 +23,12 @@ Lazarus provides a simple array of tools that are easy to use and understand, wh
 Here is a sample "Car" behavior script written using Lazarus, with comments annotating highlights of Lazarus' features:
 ```lua 
 local function Seat(seat)
-	local fireParticles: Fire = Lazarus.WaitForChild(seat, "FireParticles")
+    local fireParticles: Fire = Lazarus.WaitForChild(seat, "FireParticles")
 
-	fireParticles.Enabled = true
-	return function() -- Cleanup
-		fireParticles.Enabled = false
-	end
+    fireParticles.Enabled = true
+    return function() -- Cleanup
+        fireParticles.Enabled = false
+    end
 end
 
 --[[
@@ -39,22 +39,22 @@ for any reason! Lazarus automatically manages events connections for
 you, removing many sources of memory leaks!
 ]]
 local function Car(car)
-	local seats: Folder = Lazarus.WaitForChild(car, "Seats")
-	local body: BasePart = Lazarus.WaitForChild(car, "Body")
+    local seats: Folder = Lazarus.WaitForChild(car, "Seats")
+    local body: BasePart = Lazarus.WaitForChild(car, "Body")
 
-	-- Lazarus lets you nest behaviors, making for cleaner and more
-	-- Shallow code that is easy to read! When behaviors are run,
-	-- they return a "cleanup" function which allows you to specify
-	-- when these behaviors start and stop running.
-	local cleanupSeats = Lazarus.WithChildren(seats):RunBehavior(Seat)
+    -- Lazarus lets you nest behaviors, making for cleaner and more
+    -- Shallow code that is easy to read! When behaviors are run,
+    -- they return a "cleanup" function which allows you to specify
+    -- when these behaviors start and stop running.
+    local cleanupSeats = Lazarus.WithChildren(seats):RunBehavior(Seat)
 
-	print("We set up the car", car:GetFullName())
+    print("We set up the car", car:GetFullName())
 
-	return function() -- Cleanup
-		cleanupSeats()
+    return function() -- Cleanup
+        cleanupSeats()
 
-		print("We cleaned up the car", car:GetFullName())
-	end
+        print("We cleaned up the car", car:GetFullName())
+    end
 end
 
 -- Run our Car behavior every time an instance with the
