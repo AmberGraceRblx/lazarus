@@ -108,10 +108,13 @@ local function queueContinue(execution: Execution)
 	end
 end
 local function queueRestart(execution: Execution)
-	if execution._state == "yielding" or execution._state == "pending" then
+	if
+		(execution._state ~= "pending")
+		and (execution._state ~= "finished")
+	then
 		if
-			(execution._queuedDirective == "finished")
-			and (execution._queuedDirective == "restart")
+			(execution._queuedDirective ~= "finished")
+			and (execution._queuedDirective ~= "restart")
 		then
 			execution._queuedDirective = "restart"
 		end
@@ -139,6 +142,8 @@ function ExecutionManager.StartExecution(behavior: Types.Behavior, instance: Ins
 		queueFinish(execution)
 	end
 end
+
+local DEBUG_EXECUTIONS = false
 
 --[[
 
@@ -306,8 +311,17 @@ function ExecutionManager.StartSystems()
 				hasQueuedWorkSet[queuedWorkList[i]] = true
 			end
 
-			if resourceBlocks > 0 or effectBlocks > 0 or resourceCleanups > 0 or effectCleanups > 0 then
-				print("Active frame:", resourceBlocks, effectBlocks, resourceCleanups, effectCleanups)
+			if DEBUG_EXECUTIONS then
+				if resourceBlocks > 0 or effectBlocks > 0 or resourceCleanups > 0 or effectCleanups > 0 then
+					print(
+						"Behavior executions completed this frame: \n"
+						.. "Resource Blocks: %d\n"
+						.. "Effect Blocks: %d\n"
+						.. "Resource Cleanups: %d\n"
+						.. "Effect Cleanups: %d\n",
+						resourceBlocks, effectBlocks, resourceCleanups, effectCleanups
+					)
+				end
 			end
 		end)
 	end)

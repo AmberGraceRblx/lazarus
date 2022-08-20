@@ -2,9 +2,7 @@
 local CreateQueryFunction = require(script.Parent.CreateQueryFunction)
 
 local WithTagged = CreateQueryFunction(function(tag: string)
-    print("Build WithTagged query", tag)
     return function(add, remove)
-        print("Run WithTagged query", add, remove, tag)
         local CollectionService = game:GetService("CollectionService")
         for instance in CollectionService:GetTagged(tag) do
             add(instance)

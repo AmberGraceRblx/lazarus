@@ -87,9 +87,7 @@ local WaitForChild = CreateResourceMethod(function(
                 end)
             end
 
-            print("WaitForChild pre", parent, childName)
             return function()
-                print("Clean up WaitForChild pre", parent, childName)
                 conn1:Disconnect()
                 if trackNameChanges then
                     conn2:Disconnect()
@@ -115,9 +113,7 @@ local WaitForChild = CreateResourceMethod(function(
                 end)
             end
 
-            print("WaitForChild post", parent, childName)
             return function()
-                print("Clean up WaitForChild post", parent, childName)
                 conn1:Disconnect()
                 conn2:Disconnect()
                 if conn3 then
