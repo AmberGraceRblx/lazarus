@@ -1,28 +1,22 @@
 --!strict
 --[[
-    A simple, composable task collector utility object. Acts equivalently to the
+    A simple, composable task collector utility object. Similar to the
     commonly-used "maid" class, without the footguns and sexist undertones.
+
+    Returns an object with a "Collect" and a "Cleanup" function. Collect marks
+    an object to be cleaned up later, then returns that object for convenience.
 
     Example usage:
 
-        local collect, cleanup = Lazarus.TaskCollector()
-        local myPart = collect(Instance.new("Part"))
-        collect(function()
+        local tasks = Lazarus.TaskCollector()
+        local myPart = tasks.Collect(Instance.new("Part"))
+        tasks.Collect(function()
             print(
                 "This callback is run in its own thread when cleanup is called!"
             )
         end)
         -- . . .
-        cleanup() -- Cleans up all of the objects that were collected
-
-    The first function returned is a "collect" function. This collects tasks
-    of varying type (RBXScriptConnection, callback, Instance, table) and handles
-    convenient cleanup for the passed object depending on its type. As a
-    convenience, collect will return the object passed to it, allowing for a
-    one-liner that collects part of an expression that needs to be cleaned up.
-
-    The second function returned is a "cleanup" function. When it is called, it
-    will idempotently clean up all the tasks that were collected.
+        tasks.Cleanup() -- Cleans up all of the objects that were collected
 
     Task handlers: TaskCollector cleans up each task by its type
         RBXScriptConnection: Will call connection:Disconnect() when cleaned up
@@ -121,7 +115,10 @@ local TaskCollector = function()
         return taskObject
     end
     
-    return collect, cleanup
+    return {
+        Collect = collect,
+        Cleanup = cleanup,
+    }
 end
 
 return TaskCollector

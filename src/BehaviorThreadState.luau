@@ -31,6 +31,7 @@ type InternalState = {
     lastSanctionedYieldState: Types.BehaviorYieldState?,
     userReturnsPacked: Types.TablePack?,
     userDefinedCleanup: Types.Cleanup?,
+    onResource: (resource: Types.TablePack) -> ()
 }
 local threadToState: {[thread]: InternalState} = {}
 setmetatable(threadToState, {__mode = "k"})
@@ -83,7 +84,7 @@ local function stepResumption(thread: thread, state: InternalState, ...: any)
     end
 
     -- Begin user defined code up until next yield or return.
-    local yieldState = coroutine.resume(thread, ...)
+    task.spawn(thread, ...)
 
     -- If returns were encountered, validate them.
     if state.userReturnsPacked then
@@ -95,11 +96,21 @@ local function stepResumption(thread: thread, state: InternalState, ...: any)
                 .. state.getTraceback()
             )
         end
+        local cleanup = (table.unpack(state.userReturnsPacked))
+        if typeof(cleanup) ~= "function" then
+            warn(
+                "A Lazarus Behavior function returned a non-function value!"
+                .. " Behavior functions should return a single cleanup function."
+                .. " Traceback: "
+                .. state.getTraceback()
+            )
+        end
+        state.userDefinedCleanup = cleanup
         return
     end
 
     -- Check if we encountered a yield state, and had no external resumptions!
-    if state.lastSanctionedYieldState == yieldState then
+    if state.lastSanctionedYieldState then
         state.lastSanctionedYieldState = nil
         return
     end
@@ -153,23 +164,47 @@ end
     contined resumption of the thread until its status is "dead;" Should only be
     called from RunBehavior in general.
 ]]
-function BehaviorThreadState.Init(thread: thread, getTraceback: () -> string)
+function BehaviorThreadState.Init(
+    thread: thread,
+    getTraceback: () -> string,
+    onContinueExecutionRequest: () -> (),
+    onRestartExecutionRequest: () -> ()
+)
     if threadToState[thread] then
         error("Attempt to run two behaviors within the same thread!")
     end
-    local state: InternalState = {
+    local state: InternalState
+    local queuedResource: Types.TablePack?
+    state = {
         resourceMethodsSanctioned = true,
         cleanups = {},
         cleanedUp = false,
         getTraceback = getTraceback,
+        onResource = function(packedReturns)
+            queuedResource = packedReturns
+            onContinueExecutionRequest()
+        end,
+        onResourceLost = onRestartExecutionRequest,
     }
     threadToState[thread] = state
 
-    stepResumption(thread, state)
+    return {
+        FinishExecution = function()
+            local resourcesCleanedUp = #state.cleanups > 0
+            local effectsCleanedUp = state.userDefinedCleanup ~= nil
+            closeBehaviorThread(thread)
+            return resourcesCleanedUp, effectsCleanedUp
+        end,
+        ContinueExecution = function(): "yielding" | "finished"
+            if queuedResource then
+                stepResumption(thread, state, table.unpack(queuedResource))
+            else
+                stepResumption(thread, state)
+            end
 
-    return function()
-        closeBehaviorThread(thread)
-    end
+            return if (state.userDefinedCleanup ~= nil) then "finished" else "yielding"
+        end,
+    }
 end
 
 function BehaviorThreadState.HandleFinalUserReturns(
@@ -180,10 +215,6 @@ function BehaviorThreadState.HandleFinalUserReturns(
     if state then
         state.userReturnsPacked = table.pack(...)
     end
-
-    -- Our thread should yield a final time, and the returns will be handled
-    -- by the last stepResumption call.
-    coroutine.yield(true)
 end
 
 --[[
@@ -207,7 +238,6 @@ end
 ]]
 function BehaviorThreadState.AssertResourceMethodsAreSanctioned(thread: thread)
     local state = threadToState[thread]
-    local errLevel: number? = nil
     if state then
         if not state.resourceMethodsSanctioned then
             error(
@@ -236,7 +266,7 @@ function BehaviorThreadState.YieldForResource(yieldState: Types.BehaviorYieldSta
     local state = threadToState[thread]
     if state then
         state.lastSanctionedYieldState = yieldState
-        return coroutine.yield(yieldState)
+        return coroutine.yield()
     end
 
     error(
@@ -266,7 +296,7 @@ end
 function BehaviorThreadState.NotifyResourceFound(thread: thread, packedReturns: Types.TablePack)
     local state = threadToState[thread]
     if state then
-        stepResumption(thread, state, table.unpack(packedReturns))
+        state.onResource(packedReturns)
     end
 end
 

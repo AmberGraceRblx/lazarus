@@ -56,7 +56,7 @@ local function CreateResourceMethod<Args..., Returns...>(
                     -- after we have continued processing.
                     task.defer(BehaviorThreadState.NotifyResourceRemoved, thread)
                 end
-            end)
+            end, table.unpack(finalReturns))
         else
             local hasYielded = false
             preConditionCleanup = closure.TrackBeforeConditionMet(function(...)
@@ -81,9 +81,9 @@ local function CreateResourceMethod<Args..., Returns...>(
                 -- In all other branches, we should have returns. Else, we
                 -- yield for them (the thread could close / upvalues GC'd in
                 -- the case that they are never found).
-                finalReturns = BehaviorThreadState.YieldForResource({
+                finalReturns = table.pack(BehaviorThreadState.YieldForResource({
                     _fromLazarusResourceMethod = true,
-                })
+                }))
             end
 
             postConditionCleanup = closure.TrackAfterConditionMet(function()
@@ -95,7 +95,7 @@ local function CreateResourceMethod<Args..., Returns...>(
                     -- after we have continued processing.
                     task.defer(BehaviorThreadState.NotifyResourceRemoved, thread)
                 end
-            end)
+            end, table.unpack(finalReturns :: any))
         end
 
         hasReturned = true

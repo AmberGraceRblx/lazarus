@@ -33,8 +33,10 @@ end
 
 local function RunBehavior(
     userDefinedBehavior: Types.Behavior,
-    instance: Instance
-): Types.Cleanup
+    instance: Instance,
+    onContinueExecutionRequest: () -> (),
+    onRestartExecutionRequest: () -> ()
+)
     local getTraceback = memo_getTracebackReference(userDefinedBehavior)
 	-- Create a pseudo-"generator" by yielding/resuming a thread.
 	local thread: thread
@@ -51,7 +53,12 @@ local function RunBehavior(
 	end)
 	-- "thread" variable should now be initialized in this scope.
 
-    return BehaviorThreadState.Init(thread, getTraceback)
+    return BehaviorThreadState.Init(
+        thread,
+        getTraceback,
+        onContinueExecutionRequest,
+        onRestartExecutionRequest
+    )
 end
 
 return RunBehavior

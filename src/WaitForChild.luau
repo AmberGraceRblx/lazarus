@@ -36,6 +36,8 @@ local WaitForChild = CreateResourceMethod(function(
                                 end
                             end
                         end
+                    else
+                        matchingInitialChild = firstChild
                     end
                 end
             end
@@ -53,20 +55,25 @@ local WaitForChild = CreateResourceMethod(function(
                 else
                     matchesClass = true
                 end
+                if not matchesClass then
+                    return
+                end
+                
+                local matchesName = child.Name == childName
 
-                if matchesClass then
-                    if child.Name == childName then
-                        conditionMet(child)
-                    else
-                        if trackNameChanges then
-                            childToNameTrack[child] = child:GetPropertyChangedSignal("Name")
-                                :Connect(function()
-                                    if child.Name == childName then
+                if matchesName then
+                    conditionMet(child)
+                else
+                    if trackNameChanges then
+                        childToNameTrack[child] = child:GetPropertyChangedSignal("Name")
+                            :Connect(function()
+                                if child.Name == childName then
+                                    if (not childClass) or child:IsA(childClass) then
                                         conditionMet(child)
                                     end
-                                end)
-                        end
-                     end
+                                end
+                            end)
+                    end
                 end
             end)
             local conn2
@@ -79,24 +86,43 @@ local WaitForChild = CreateResourceMethod(function(
                     end
                 end)
             end
+
+            print("WaitForChild pre", parent, childName)
             return function()
+                print("Clean up WaitForChild pre", parent, childName)
                 conn1:Disconnect()
                 if trackNameChanges then
                     conn2:Disconnect()
-                    for _, conn in pairs(childToNameTrack) do
+                    for _, conn in childToNameTrack do
                         conn:Disconnect()
                     end
                 end
             end
         end,
         TrackAfterConditionMet = function(conditionUnmet, foundChild)
-            local conn1 = parent.ChildRemoved:Connect(function(child: Instance)
-                if child == foundChild then
+            local conn1 = foundChild.AncestryChanged:Connect(function(_, newParent)
+                if newParent ~= parent then
                     conditionUnmet()
                 end
             end)
+            local conn2 = foundChild.Destroying:Connect(conditionUnmet)
+            local conn3: RBXScriptConnection? = nil
+            if trackNameChanges then
+                conn3 = foundChild:GetPropertyChangedSignal("Name"):Connect(function()
+                    if foundChild.Name ~= childName then
+                        conditionUnmet()
+                    end
+                end)
+            end
+
+            print("WaitForChild post", parent, childName)
             return function()
+                print("Clean up WaitForChild post", parent, childName)
                 conn1:Disconnect()
+                conn2:Disconnect()
+                if conn3 then
+                    conn3:Disconnect()
+                end
             end
         end
     }

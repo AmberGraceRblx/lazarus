@@ -7,7 +7,7 @@ designed using CreateQueryFunction internally.
 ]]
 
 local Types = require(script.Parent.Types)
-local RunBehavior = require(script.Parent.RunBehavior)
+local ExecutionManager = require(script.Parent.ExecutionManager)
 local BehaviorThreadState = require(script.Parent.BehaviorThreadState)
 
 local QUERY_METATABLE: Types.Query_Metatable
@@ -19,7 +19,7 @@ QUERY_METATABLE = {
             local instanceToCleanup: {[any]: Types.Cleanup} = {}
             
             local dead = false
-            local cleanupQuery = self._runQuery(self._args)(
+            local cleanupQuery = self._runQuery(table.unpack(self._args))(
                 function(instance) -- add
                     if dead then
                         return
@@ -27,20 +27,24 @@ QUERY_METATABLE = {
                     if instanceToCleanup[instance] then
                         return
                     end
+
+                    print("Add called on", instance:GetFullName())
                     
-                    instanceToCleanup[instance] = RunBehavior(
+                    instanceToCleanup[instance] = ExecutionManager.StartExecution(
                         behavior,
                         instance
-                    ) -- RunBehavior is exception safe
+                    )
                 end,
                 function(instance) -- remove
                     if dead then
                         return
                     end
+
+                    print("Remove called on", instance:GetFullName())
                     local cleanup = instanceToCleanup[instance]
                     if cleanup then
                         instanceToCleanup[instance] = nil
-                        cleanup() -- RunBehavior cleanups are exception safe
+                        cleanup()
                     end
                 end
             )
@@ -51,8 +55,8 @@ QUERY_METATABLE = {
                 end
                 dead = true
                 task.spawn(cleanupQuery) -- External code (unsafe)
-                for instance, cleanup in pairs(instanceToCleanup) do
-                    cleanup() -- RunBehavior cleanups are safe
+                for _, cleanup in instanceToCleanup do
+                    cleanup()
                 end
             end
         end,
@@ -63,7 +67,7 @@ QUERY_METATABLE = {
             local nextQueryFields: Types.Query_Fields = {
                 _runQuery = function(...)
                     return function(add, remove)
-                        return lastQuery(self._args)(
+                        return lastQuery(table.unpack(self._args))(
                             function(instance: any)
                                 if predicate(instance) then
                                     add(instance)
@@ -78,6 +82,9 @@ QUERY_METATABLE = {
 
             return setmetatable(nextQueryFields, QUERY_METATABLE)
         end,
+        -- WithActor = function(self, actor): Types.Query
+
+        -- end,
     },
     __tostring = function(self)
         return string.format(

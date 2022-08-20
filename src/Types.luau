@@ -17,10 +17,19 @@ export type Query_Fields = {
 }
 export type Query_Metatable = {
 	__index: {
+		-- Narrows down queries on a given condition
 		WithCondition: (
 			self: Query,
 			predicate: (instance: any) -> boolean
-		) -> (),
+		) -> Query,
+		-- -- Uses an actor for parallel code execution? This is going to be hard
+		-- -- to implement for client-side code, since the client cannot have
+		-- -- actors. It may be better to simply use task.desynchronize within
+		-- -- a behavior's main effect block.
+		-- WithActor: (
+		-- 	self: Query,
+		-- 	actor: Actor
+		-- ) -> Query,
 		RunBehavior: (
 			self: Query,
 			behavior: Behavior
@@ -36,6 +45,18 @@ export type QueryCreator<Args...> = (Args...) -> Query
 export type Behavior = (instance: any) -> Cleanup
 export type BehaviorYieldState = {
 	_fromLazarusResourceMethod: true,
+}
+export type ConfigThrottleTriggers = {
+    ExecutionTime: number?,
+    ResourceCleanups: number?,
+    EffectCleanups: number?,
+    ResourceBlocks: number?,
+    EffectBlocks: number?,
+}
+export type Config = {
+    ClientThrottleTriggers: ConfigThrottleTriggers,
+    ClientMaxRenderStepHeartbeatRatio: number?,
+    ServerThrottleTriggers: ConfigThrottleTriggers,
 }
 
 return nil
