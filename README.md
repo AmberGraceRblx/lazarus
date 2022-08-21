@@ -11,50 +11,70 @@ Scripted Behavior Library for Roblox
 
 ## Description
 
-Lazarus is an Roblox library that makes it easy and safe to to write behavior code that brings instances to life in a way that is compatible with StreamingEnabled. Because StreamingEnabled often streams parts in and out incompletly, client-side code that relies on WaitForChild can often be unsafe, leak entire threads, break in edge cases, or causes memory leaks in edge cases that are hard to test.
+Lazarus is an Roblox library that solves common problems with replicated instances in a way that's compatible with StreamingEnabled.
+Because StreamingEnabled often streams parts in and out incompletly, client-side code that relies on WaitForChild can often be unsafe, leak entire threads, break in edge cases, or causes memory leaks in that are hard to diagnose.
 
-Lazarus provides a simple array of tools that are easy to use and understand, while handling memory and event cleanups for you.
+Lazarus provides a simple array of tools that allow you to define "behaviors", which are function generators that can yield using Lazarus methods.
 
 ## Installation
+
+
+A stable release has not yet been published. This repository is synced via Rojo while it's in development.
 
 
 ## Example
 
 Here is a sample "Car" behavior script written using Lazarus, with comments annotating highlights of Lazarus' features:
 ```lua 
+--[[
+    "Seat" behavior: Behaviors are function generators that wait for resources,
+    execute side effects, then return callback to clean up these side effects
+]]
 local function Seat(seat)
+    -- Wait for resources
     local fireParticles: Fire = Lazarus.WaitForChild(seat, "FireParticles")
 
+    -- Execute side effects
     fireParticles.Enabled = true
-    return function() -- Cleanup
+
+    -- Return callback to clean up side effects
+    return function()
         fireParticles.Enabled = false
     end
 end
 
 --[[
-"Car" behavior: Lazarus will automatically yield and resume the Car
-behavior until all required children are found, resetting back to the
-beginning of the function if any of the required resources disappear
-for any reason! Lazarus automatically manages events connections for
-you, removing many sources of memory leaks!
+    "Car" behavior: Waits for "Seats" folder and "Body" part, when executes
+    a nested behavior and runs scripted effects on the car instance.
 ]]
 local function Car(car)
+    -- Resource block: Wait for resources using Lazarus methods
     local seats: Folder = Lazarus.WaitForChild(car, "Seats")
     local body: BasePart = Lazarus.WaitForChild(car, "Body")
 
+    -- Effect block: Execute side effects.
+    -- Lazarus provides a "TaskCollector" utility to better manage side
+    -- effect cleanups
+    local tasks = Lazarus.TaskCollector()
+
     -- Lazarus lets you nest behaviors, making for cleaner and more
-    -- Shallow code that is easy to read! When behaviors are run,
-    -- they return a "cleanup" function which allows you to specify
-    -- when these behaviors start and stop running.
+    -- Shallow code that is easy to read!
     local cleanupSeats = Lazarus.WithChildren(seats):RunBehavior(Seat)
+
+    -- Specify that we want to stop all nested Seat behaviors when
+    -- Car behavior is cleaned up later
+    tasks.Collect(cleanupSeats)
 
     print("We set up the car", car:GetFullName())
 
-    return function() -- Cleanup
-        cleanupSeats()
-
+    -- Specify a callback to execute when the behavior is cleaned up
+    tasks.Collect(function()
         print("We cleaned up the car", car:GetFullName())
-    end
+    end)
+
+    -- Cleanup callback: We can simple return the "Cleanup" function on our
+    -- task collector object
+    return tasks.Cleanup
 end
 
 -- Run our Car behavior every time an instance with the

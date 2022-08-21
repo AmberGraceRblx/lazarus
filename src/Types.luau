@@ -9,7 +9,8 @@ export type TablePack = {[number]: any, n: number}
 export type Cleanup = () -> ()
 export type QueryRunner<Args...> = (Args...) -> (
 	add: (instance: Instance) -> (),
-	remove: (instance: Instance) -> ()
+	remove: (instance: Instance) -> (),
+	removeAll: () -> ()
 ) -> Cleanup
 export type Query_Fields = {
 	_runQuery: QueryRunner<...any>,

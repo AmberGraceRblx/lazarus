@@ -21,6 +21,9 @@ local Lazarus = {}
 
 -- Query Methods
 Lazarus.WithTagged = require(script.WithTagged)
+Lazarus.WithChildren = require(script.WithChildren)
+Lazarus.WithDescendants = require(script.WithDescendants)
+Lazarus.WithInstance = require(script.WithInstance)
 
 -- Resource Methods
 Lazarus.WaitForChild = require(script:FindFirstChild("WaitForChild"))

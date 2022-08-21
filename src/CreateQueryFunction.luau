@@ -19,6 +19,18 @@ QUERY_METATABLE = {
 			local instanceToCleanup: {[any]: Types.Cleanup} = {}
 			
 			local dead = false
+
+			local function remove(instance: any)
+				if dead then
+					return
+				end
+
+				local cleanup = instanceToCleanup[instance]
+				if cleanup then
+					instanceToCleanup[instance] = nil
+					cleanup()
+				end
+			end
 			local cleanupQuery = self._runQuery(table.unpack(self._args))(
 				function(instance) -- add
 					if dead then
@@ -33,15 +45,15 @@ QUERY_METATABLE = {
 						instance
 					)
 				end,
-				function(instance) -- remove
-					if dead then
-						return
+				remove,
+				function() -- removeAll
+					-- Copy into list, since remove() mutates instanceToCleanup
+					local instanceList = {}
+					for instance in instanceToCleanup do
+						table.insert(instanceList, instance)
 					end
-
-					local cleanup = instanceToCleanup[instance]
-					if cleanup then
-						instanceToCleanup[instance] = nil
-						cleanup()
+					for _, instance in instanceList do
+						remove(instance)
 					end
 				end
 			)
@@ -63,14 +75,15 @@ QUERY_METATABLE = {
 			local lastQuery = self._runQuery
 			local nextQueryFields: Types.Query_Fields = {
 				_runQuery = function(...)
-					return function(add, remove)
+					return function(add, remove, removeAll)
 						return lastQuery(table.unpack(self._args))(
 							function(instance: any)
 								if predicate(instance) then
 									add(instance)
 								end
 							end,
-							remove
+							remove,
+							removeAll
 						)
 					end
 				end,

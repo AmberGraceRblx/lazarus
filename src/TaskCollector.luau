@@ -29,6 +29,8 @@
 		nil: Will be silently ignored
 ]]
 
+local BehaviorThreadState = require(script.Parent.BehaviorThreadState)
+
 export type CleanupTask = (() -> ())
 	| RBXScriptConnection
 	| Instance
@@ -74,6 +76,8 @@ local TRANSFORM_BY_TYPE: {[string]: (taskObject: any) -> (() -> ())?} = {
 }
 
 local TaskCollector = function()
+	BehaviorThreadState.NotifyNonResourceMethodCall(coroutine.running())
+
 	local tasks: {() -> ()} = {}
 	local cleanedUp = false
 	local function cleanup()
