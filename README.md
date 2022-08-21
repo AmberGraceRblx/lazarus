@@ -14,7 +14,7 @@ Scripted Behavior Library for Roblox
 Lazarus is an Roblox library that solves common problems with replicated instances in a way that's compatible with StreamingEnabled.
 Because StreamingEnabled often streams parts in and out incompletly, client-side code that relies on WaitForChild can often be unsafe, leak entire threads, break in edge cases, or causes memory leaks in that are hard to diagnose.
 
-Lazarus provides a simple array of tools that allow you to define "behaviors", which are function generators that can yield using Lazarus methods.
+Lazarus provides a simple array of tools that allow you to define "behaviors", which are functions that can wait for resources using Lazarus methods, and will restart execution when a resource is lost.
 
 ## Installation
 
