@@ -57,8 +57,8 @@ local function Car(car)
     -- effect cleanups
     local tasks = Lazarus.TaskCollector()
 
-    -- Lazarus lets you nest behaviors, making for cleaner and more
-    -- Shallow code that is easy to read!
+    -- Lazarus allows you to nest behaviors! We can use this to run a "Seat"
+    -- behavior on any children of the "Seats" folder
     local cleanupSeats = Lazarus.WithChildren(seats):RunBehavior(Seat)
 
     -- Specify that we want to stop all nested Seat behaviors when
